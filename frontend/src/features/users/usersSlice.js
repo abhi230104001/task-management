@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../api/axios';
-
 export const getUsers = createAsyncThunk('users/getUsers', async (queryParams, thunkAPI) => {
   try {
     const params = new URLSearchParams(queryParams).toString();
@@ -10,7 +9,6 @@ export const getUsers = createAsyncThunk('users/getUsers', async (queryParams, t
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const createUser = createAsyncThunk('users/createUser', async (userData, thunkAPI) => {
   try {
     const response = await api.post('/users', userData);
@@ -19,7 +17,6 @@ export const createUser = createAsyncThunk('users/createUser', async (userData, 
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const updateUser = createAsyncThunk('users/updateUser', async ({ id, userData }, thunkAPI) => {
   try {
     const response = await api.put(`/users/${id}`, userData);
@@ -28,7 +25,6 @@ export const updateUser = createAsyncThunk('users/updateUser', async ({ id, user
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const deleteUser = createAsyncThunk('users/deleteUser', async (id, thunkAPI) => {
   try {
     await api.delete(`/users/${id}`);
@@ -37,7 +33,6 @@ export const deleteUser = createAsyncThunk('users/deleteUser', async (id, thunkA
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 const usersSlice = createSlice({
   name: 'users',
   initialState: {
@@ -116,6 +111,5 @@ const usersSlice = createSlice({
       });
   },
 });
-
 export const { reset } = usersSlice.actions;
 export default usersSlice.reducer;
