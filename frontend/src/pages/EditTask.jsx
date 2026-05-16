@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTask, updateTask } from '../features/tasks/tasksSlice';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getUsers } from '../features/users/usersSlice';
-
 const schema = z.object({
   title: z.string().min(1, 'Title is required').max(100),
   description: z.string().min(1, 'Description is required').max(1000),
@@ -15,7 +14,6 @@ const schema = z.object({
   dueDate: z.string().optional(),
   assignedTo: z.string().optional(),
 });
-
 const EditTask = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -23,18 +21,15 @@ const EditTask = () => {
   const { task, isLoading } = useSelector((state) => state.tasks);
   const { users } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
-
   const { register, handleSubmit, reset, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
-
   useEffect(() => {
     dispatch(getTask(id));
     if (user) {
       dispatch(getUsers({ limit: 100 }));
     }
   }, [dispatch, id, user]);
-
   useEffect(() => {
     if (task) {
       reset({
@@ -47,9 +42,7 @@ const EditTask = () => {
       });
     }
   }, [task, reset]);
-
   const [files, setFiles] = useState([]);
-
   const handleFileChange = (e) => {
     if (e.target.files.length > 3) {
       alert('You can only upload a maximum of 3 files');
@@ -57,30 +50,24 @@ const EditTask = () => {
     }
     setFiles(e.target.files);
   };
-
   const onSubmit = async (data) => {
     const formData = new FormData();
     Object.keys(data).forEach(key => {
-      // Don't append empty strings for assignedTo and dueDate
       if (key === 'assignedTo' && data[key] === '') return;
       if (key === 'dueDate' && data[key] === '') return;
       if (data[key]) formData.append(key, data[key]);
     });
-    
     for (let i = 0; i < files.length; i++) {
       formData.append('documents', files[i]);
     }
-    
     const res = await dispatch(updateTask({ id, taskData: formData }));
     if (!res.error) {
       navigate(`/tasks/${id}`);
     }
   };
-
   if (isLoading || !task) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Edit Task</h1>
@@ -90,13 +77,11 @@ const EditTask = () => {
           <input type="text" {...register('title')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
           {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700">Description</label>
           <textarea {...register('description')} rows={4} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Status</label>
@@ -115,7 +100,6 @@ const EditTask = () => {
             </select>
           </div>
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Due Date</label>
@@ -131,12 +115,10 @@ const EditTask = () => {
             </select>
           </div>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700">Update Attachments (Max 3 PDFs, overrides existing)</label>
           <input type="file" multiple accept="application/pdf" onChange={handleFileChange} className="mt-1 block w-full" />
         </div>
-
         <div className="flex justify-end">
           <button type="submit" className="bg-primary-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
             Save Changes
@@ -146,5 +128,4 @@ const EditTask = () => {
     </div>
   );
 };
-
 export default EditTask;

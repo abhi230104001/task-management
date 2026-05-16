@@ -3,33 +3,27 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTasks, reset } from '../features/tasks/tasksSlice';
 import { Link } from 'react-router-dom';
 import { CheckCircle, Clock, AlertCircle } from 'lucide-react';
-
 const Dashboard = () => {
   const dispatch = useDispatch();
   const { tasks, isLoading } = useSelector((state) => state.tasks);
-
   useEffect(() => {
-    dispatch(getTasks({ limit: 100 })); // Get some tasks for stats
+    dispatch(getTasks({ limit: 100 })); 
     return () => {
       dispatch(reset());
     };
   }, [dispatch]);
-
   const stats = {
     total: tasks.length,
     completed: tasks.filter((t) => t.status === 'completed').length,
     inProgress: tasks.filter((t) => t.status === 'in-progress').length,
     todo: tasks.filter((t) => t.status === 'todo').length,
   };
-
   if (isLoading) {
     return <div>Loading dashboard...</div>;
   }
-
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-      
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-5 flex items-center">
@@ -44,7 +38,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-5 flex items-center">
             <div className="flex-shrink-0">
@@ -58,7 +51,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-5 flex items-center">
             <div className="flex-shrink-0">
@@ -72,7 +64,6 @@ const Dashboard = () => {
             </div>
           </div>
         </div>
-
         <div className="bg-white overflow-hidden shadow rounded-lg">
           <div className="p-5 flex items-center">
             <div className="flex-shrink-0">
@@ -87,7 +78,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-
       <div className="mt-8">
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium text-gray-900">Recent Tasks</h2>
@@ -119,5 +109,4 @@ const Dashboard = () => {
     </div>
   );
 };
-
 export default Dashboard;

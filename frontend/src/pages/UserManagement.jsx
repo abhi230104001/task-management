@@ -2,15 +2,12 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUsers, deleteUser } from '../features/users/usersSlice';
 import toast from 'react-hot-toast';
-
 const UserManagement = () => {
   const dispatch = useDispatch();
   const { users, isLoading } = useSelector((state) => state.users);
-
   useEffect(() => {
     dispatch(getUsers({}));
   }, [dispatch]);
-
   const handleDelete = async (id) => {
     if (window.confirm('Delete user?')) {
       const res = await dispatch(deleteUser(id));
@@ -19,9 +16,7 @@ const UserManagement = () => {
       }
     }
   };
-
   if (isLoading) return <div>Loading...</div>;
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -43,5 +38,4 @@ const UserManagement = () => {
     </div>
   );
 };
-
 export default UserManagement;

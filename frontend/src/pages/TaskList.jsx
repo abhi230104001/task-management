@@ -4,42 +4,34 @@ import { getTasks, deleteTask, reset } from '../features/tasks/tasksSlice';
 import { Link } from 'react-router-dom';
 import { Plus, Edit2, Trash2, Eye } from 'lucide-react';
 import toast from 'react-hot-toast';
-
 const TaskList = () => {
   const dispatch = useDispatch();
   const { tasks, isLoading, isError, message } = useSelector((state) => state.tasks);
-  
   const [taskTypeFilter, setTaskTypeFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('');
   const [priorityFilter, setPriorityFilter] = useState('');
   const [dueDateFilter, setDueDateFilter] = useState('');
   const [sortOption, setSortOption] = useState('-createdAt');
-
   useEffect(() => {
     console.log('Current Filter State:', { taskTypeFilter, statusFilter, priorityFilter, dueDateFilter, sortOption });
-    
     const params = {};
     if (sortOption) params.sort = sortOption;
     if (taskTypeFilter && taskTypeFilter !== 'all') params.type = taskTypeFilter;
     if (statusFilter) params.status = statusFilter;
     if (priorityFilter) params.priority = priorityFilter;
     if (dueDateFilter) params.dueDate = dueDateFilter;
-    
     console.log('API Query Params:', params);
-    
     dispatch(getTasks(params)).then((res) => {
       if (res.payload && res.payload.data) {
         console.log('API Response Count:', res.payload.data.length);
       }
     });
   }, [dispatch, taskTypeFilter, statusFilter, priorityFilter, dueDateFilter, sortOption]);
-
   useEffect(() => {
     if (isError) {
       toast.error(message);
     }
   }, [isError, message]);
-
   const clearFilters = () => {
     setTaskTypeFilter('all');
     setStatusFilter('');
@@ -47,13 +39,11 @@ const TaskList = () => {
     setDueDateFilter('');
     setSortOption('-createdAt');
   };
-
   const handleDelete = (id) => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       dispatch(deleteTask(id));
     }
   };
-
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -66,7 +56,6 @@ const TaskList = () => {
           Create Task
         </Link>
       </div>
-
       <div className="flex flex-wrap gap-4 mb-4 items-center">
         <select
           value={taskTypeFilter}
@@ -77,7 +66,6 @@ const TaskList = () => {
           <option value="assigned">Assigned To Me</option>
           <option value="created">Created By Me</option>
         </select>
-
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
@@ -88,7 +76,6 @@ const TaskList = () => {
           <option value="in-progress">In Progress</option>
           <option value="completed">Completed</option>
         </select>
-
         <select
           value={priorityFilter}
           onChange={(e) => setPriorityFilter(e.target.value)}
@@ -99,14 +86,12 @@ const TaskList = () => {
           <option value="medium">Medium</option>
           <option value="high">High</option>
         </select>
-
         <input
           type="date"
           value={dueDateFilter}
           onChange={(e) => setDueDateFilter(e.target.value)}
           className="mt-1 block w-40 pl-3 pr-3 py-2 text-base border-gray-300 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm rounded-md"
         />
-
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
@@ -117,7 +102,6 @@ const TaskList = () => {
           <option value="dueDate">Due Date (Earliest)</option>
           <option value="-dueDate">Due Date (Latest)</option>
         </select>
-
         <button 
           onClick={clearFilters}
           className="mt-1 px-4 py-2 bg-gray-200 text-gray-700 rounded-md text-sm font-medium hover:bg-gray-300 focus:outline-none"
@@ -125,7 +109,6 @@ const TaskList = () => {
           Clear Filters
         </button>
       </div>
-
       <div className="bg-white shadow overflow-hidden sm:rounded-md">
         {isLoading ? (
           <div className="p-4 text-center">Loading...</div>
@@ -177,5 +160,4 @@ const TaskList = () => {
     </div>
   );
 };
-
 export default TaskList;

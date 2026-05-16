@@ -6,31 +6,25 @@ import { useDispatch, useSelector } from 'react-redux';
 import socket from '../utils/socket';
 import { taskCreatedBySocket, taskUpdatedBySocket, taskDeletedBySocket } from '../features/tasks/tasksSlice';
 import toast from 'react-hot-toast';
-
 const MainLayout = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-
   useEffect(() => {
     if (user) {
       socket.connect();
       socket.emit('joinRoom', user._id);
-
       socket.on('taskCreated', (task) => {
         dispatch(taskCreatedBySocket(task));
         toast.success(`New task created: ${task.title}`);
       });
-
       socket.on('taskUpdated', (task) => {
         dispatch(taskUpdatedBySocket(task));
         toast.success(`Task updated: ${task.title}`);
       });
-
       socket.on('taskDeleted', (data) => {
         dispatch(taskDeletedBySocket(data));
         toast.success('A task was deleted');
       });
-
       return () => {
         socket.off('taskCreated');
         socket.off('taskUpdated');
@@ -39,7 +33,6 @@ const MainLayout = () => {
       };
     }
   }, [user, dispatch]);
-
   return (
     <div className="flex h-screen bg-gray-50">
       <Sidebar />
@@ -52,5 +45,4 @@ const MainLayout = () => {
     </div>
   );
 };
-
 export default MainLayout;

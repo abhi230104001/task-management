@@ -3,21 +3,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getTask } from '../features/tasks/tasksSlice';
 import { useParams, Link } from 'react-router-dom';
 import api from '../api/axios';
-
 const TaskDetails = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const { task, isLoading } = useSelector((state) => state.tasks);
-
   useEffect(() => {
     dispatch(getTask(id));
   }, [dispatch, id]);
-
-
   if (isLoading || !task) {
     return <div>Loading...</div>;
   }
-
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -67,10 +62,8 @@ const TaskDetails = () => {
                     const token = localStorage.getItem('token');
                     const backendHost = import.meta.env.VITE_SOCKET_URL || '';
                     const absoluteUrl = isLocal ? `${backendHost}${doc.secure_url}` : doc.secure_url;
-                    
                     const viewUrl = isLocal ? `${absoluteUrl}?token=${token}` : doc.secure_url;
                     const downloadUrl = isLocal ? `${absoluteUrl}?token=${token}` : doc.secure_url.replace('/upload/', '/upload/fl_attachment/');
-
                     return (
                       <li key={doc._id} className="pl-3 pr-4 py-3 flex items-center justify-between text-sm">
                         <div className="w-0 flex-1 flex items-center">
@@ -99,5 +92,4 @@ const TaskDetails = () => {
     </div>
   );
 };
-
 export default TaskDetails;

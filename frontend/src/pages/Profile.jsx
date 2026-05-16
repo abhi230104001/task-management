@@ -1,8 +1,6 @@
 import { useSelector } from 'react-redux';
-
 const Profile = () => {
   const { user } = useSelector((state) => state.auth);
-
   return (
     <div className="max-w-3xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <div className="bg-white shadow overflow-hidden sm:rounded-lg">
@@ -30,5 +28,4 @@ const Profile = () => {
     </div>
   );
 };
-
 export default Profile;

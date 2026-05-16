@@ -6,7 +6,6 @@ import { createTask } from '../features/tasks/tasksSlice';
 import { useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getUsers } from '../features/users/usersSlice';
-
 const schema = z.object({
   title: z.string().min(1, 'Title is required').max(100),
   description: z.string().min(1, 'Description is required').max(1000),
@@ -15,7 +14,6 @@ const schema = z.object({
   dueDate: z.string().optional(),
   assignedTo: z.string().optional(),
 });
-
 const CreateTask = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
@@ -24,19 +22,16 @@ const CreateTask = () => {
       priority: 'medium',
     }
   });
-
   const [files, setFiles] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { users } = useSelector((state) => state.users);
   const { user } = useSelector((state) => state.auth);
-
   useEffect(() => {
     if (user) {
       dispatch(getUsers({ limit: 100 }));
     }
   }, [dispatch, user]);
-
   const handleFileChange = (e) => {
     if (e.target.files.length > 3) {
       alert('You can only upload a maximum of 3 files');
@@ -44,23 +39,19 @@ const CreateTask = () => {
     }
     setFiles(e.target.files);
   };
-
   const onSubmit = async (data) => {
     const formData = new FormData();
     Object.keys(data).forEach(key => {
       if (data[key]) formData.append(key, data[key]);
     });
-    
     for (let i = 0; i < files.length; i++) {
       formData.append('documents', files[i]);
     }
-
     const res = await dispatch(createTask(formData));
     if (!res.error) {
       navigate('/tasks');
     }
   };
-
   return (
     <div className="max-w-2xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Create New Task</h1>
@@ -70,13 +61,11 @@ const CreateTask = () => {
           <input type="text" {...register('title')} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
           {errors.title && <p className="text-red-500 text-xs mt-1">{errors.title.message}</p>}
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700">Description</label>
           <textarea {...register('description')} rows={4} className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500" />
           {errors.description && <p className="text-red-500 text-xs mt-1">{errors.description.message}</p>}
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Status</label>
@@ -95,7 +84,6 @@ const CreateTask = () => {
             </select>
           </div>
         </div>
-
         <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Due Date</label>
@@ -111,12 +99,10 @@ const CreateTask = () => {
             </select>
           </div>
         </div>
-
         <div>
           <label className="block text-sm font-medium text-gray-700">Attachments (Max 3 PDFs)</label>
           <input type="file" multiple accept="application/pdf" onChange={handleFileChange} className="mt-1 block w-full" />
         </div>
-
         <div className="flex justify-end">
           <button type="submit" className="bg-primary-600 border border-transparent rounded-md shadow-sm py-2 px-4 inline-flex justify-center text-sm font-medium text-white hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
             Create Task
@@ -126,5 +112,4 @@ const CreateTask = () => {
     </div>
   );
 };
-
 export default CreateTask;

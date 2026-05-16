@@ -6,22 +6,18 @@ import { register as registerUser, reset } from '../features/auth/authSlice';
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import toast from 'react-hot-toast';
-
 const schema = z.object({
   name: z.string().min(2, { message: 'Name must be at least 2 characters' }),
   email: z.string().email({ message: 'Invalid email address' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
 });
-
 const Register = () => {
   const { register, handleSubmit, formState: { errors } } = useForm({
     resolver: zodResolver(schema),
   });
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { isSuccess, isError, message, isLoading } = useSelector((state) => state.auth);
-
   useEffect(() => {
     if (isError) {
       toast.error(message);
@@ -31,11 +27,9 @@ const Register = () => {
     }
     dispatch(reset());
   }, [isError, isSuccess, message, navigate, dispatch]);
-
   const onSubmit = (data) => {
     dispatch(registerUser(data));
   };
-
   return (
     <div>
       <div>
@@ -82,7 +76,6 @@ const Register = () => {
             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
           </div>
         </div>
-
         <div>
           <button
             type="submit"
@@ -101,5 +94,4 @@ const Register = () => {
     </div>
   );
 };
-
 export default Register;
