@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const documentSchema = new mongoose.Schema({
   public_id: String,
   secure_url: String,
@@ -9,7 +8,6 @@ const documentSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
 const taskSchema = new mongoose.Schema(
   {
     title: {
@@ -51,5 +49,4 @@ const taskSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
-
 module.exports = mongoose.model('Task', taskSchema);
