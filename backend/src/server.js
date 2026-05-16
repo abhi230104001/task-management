@@ -10,7 +10,7 @@ const server = http.createServer(app);
 // Initialize Socket.IO
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:3000', // In production, replace with frontend URL
+    origin: ['http://localhost:3000', 'https://task-management-gilt-pi.vercel.app'], // Local dev & Production Vercel
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     credentials: true,
   },
