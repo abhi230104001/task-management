@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../api/axios';
-
 export const getTasks = createAsyncThunk('tasks/getTasks', async (queryParams, thunkAPI) => {
   try {
     const params = new URLSearchParams(queryParams).toString();
@@ -10,7 +9,6 @@ export const getTasks = createAsyncThunk('tasks/getTasks', async (queryParams, t
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const getTask = createAsyncThunk('tasks/getTask', async (id, thunkAPI) => {
   try {
     const response = await api.get(`/tasks/${id}`);
@@ -19,12 +17,10 @@ export const getTask = createAsyncThunk('tasks/getTask', async (id, thunkAPI) =>
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const createTask = createAsyncThunk('tasks/createTask', async (taskData, thunkAPI) => {
   try {
     let response;
     if (taskData instanceof FormData) {
-      // Let Axios automatically set the Content-Type with the correct boundary
       response = await api.post('/tasks', taskData);
     } else {
       response = await api.post('/tasks', taskData, { 
@@ -36,7 +32,6 @@ export const createTask = createAsyncThunk('tasks/createTask', async (taskData, 
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const updateTask = createAsyncThunk('tasks/updateTask', async ({ id, taskData }, thunkAPI) => {
   try {
     const response = await api.put(`/tasks/${id}`, taskData);
@@ -45,7 +40,6 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async ({ id, task
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id, thunkAPI) => {
   try {
     const response = await api.delete(`/tasks/${id}`);
@@ -54,7 +48,6 @@ export const deleteTask = createAsyncThunk('tasks/deleteTask', async (id, thunkA
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 const tasksSlice = createSlice({
   name: 'tasks',
   initialState: {
@@ -168,6 +161,5 @@ const tasksSlice = createSlice({
       });
   },
 });
-
 export const { reset, taskCreatedBySocket, taskUpdatedBySocket, taskDeletedBySocket } = tasksSlice.actions;
 export default tasksSlice.reducer;

@@ -1,10 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { LayoutDashboard, CheckSquare, Users, User } from 'lucide-react';
-
 const Sidebar = () => {
   const { user } = useSelector((state) => state.auth);
-
   return (
     <div className="hidden md:flex flex-col w-64 bg-gray-800">
       <div className="flex items-center justify-center h-16 bg-gray-900">
@@ -23,7 +21,6 @@ const Sidebar = () => {
             <LayoutDashboard className="mr-3 h-6 w-6" />
             Dashboard
           </NavLink>
-          
           <NavLink
             to="/tasks"
             className={({ isActive }) =>
@@ -35,7 +32,6 @@ const Sidebar = () => {
             <CheckSquare className="mr-3 h-6 w-6" />
             Tasks
           </NavLink>
-
           <NavLink
             to="/profile"
             className={({ isActive }) =>
@@ -47,7 +43,6 @@ const Sidebar = () => {
             <User className="mr-3 h-6 w-6" />
             Profile
           </NavLink>
-
           {user && user.role === 'admin' && (
             <NavLink
               to="/users"
@@ -66,5 +61,4 @@ const Sidebar = () => {
     </div>
   );
 };
-
 export default Sidebar;

@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import api from '../../api/axios';
-
 const token = localStorage.getItem('token');
-
 export const register = createAsyncThunk('auth/register', async (userData, thunkAPI) => {
   try {
     const response = await api.post('/auth/register', userData);
@@ -12,7 +10,6 @@ export const register = createAsyncThunk('auth/register', async (userData, thunk
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) => {
   try {
     const response = await api.post('/auth/login', userData);
@@ -22,7 +19,6 @@ export const login = createAsyncThunk('auth/login', async (userData, thunkAPI) =
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 export const getMe = createAsyncThunk('auth/getMe', async (_, thunkAPI) => {
   try {
     const response = await api.get('/auth/me');
@@ -31,7 +27,6 @@ export const getMe = createAsyncThunk('auth/getMe', async (_, thunkAPI) => {
     return thunkAPI.rejectWithValue(error.response?.data?.message || error.message);
   }
 });
-
 const authSlice = createSlice({
   name: 'auth',
   initialState: {
@@ -103,6 +98,5 @@ const authSlice = createSlice({
       });
   },
 });
-
 export const { reset, logout } = authSlice.actions;
 export default authSlice.reducer;
